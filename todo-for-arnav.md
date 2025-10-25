@@ -1,0 +1,4 @@
+- make inference much faster
+- make prompt much better
+- make responses more natural
+- make a list of very good questions and an amazing fake transcript for the demo
