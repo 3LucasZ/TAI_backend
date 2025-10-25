@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 import subprocess
 from fastapi import FastAPI
 from fastapi import WebSocket
@@ -15,16 +16,33 @@ def toggleVideo():
     )
 
 
-@app.get("/setCollapsedTrue")
-def setCollapsedTrue():
+# send messages to client
+@app.post("/setCollapsedTrue")
+async def setCollapsedTrue():
     global g_websocket
-    g_websocket.send_text("setCollapsedTrue")
+    await g_websocket.send_text("setCollapsedTrue")
 
 
-@app.get("/setCollapsedFalse")
-def setCollapsedFalse():
+@app.post("/setCollapsedFalse")
+async def setCollapsedFalse():
     global g_websocket
-    g_websocket.send_text("setCollapsedFalse")
+    await g_websocket.send_text("setCollapsedFalse")
+
+
+class Message(BaseModel):
+    text: str
+
+
+@app.post("/chat/user/")
+async def chatUser(message: Message):
+    global g_websocket
+    await g_websocket.send_text(f"chatUser {message.text}")
+
+
+@app.post("/chat/bot/")
+async def chatBot(message: Message):
+    global g_websocket
+    await g_websocket.send_text(f"chatBot {message.text}")
 
 
 @app.websocket("/ws")
