@@ -1,0 +1,48 @@
+[00:08.14] Okay, so today we're moving on to SVD.
+[00:10.52] Singular Value Decomposition.
+[00:13.90] This is... this is really a fundamental tool.
+[00:16.77] It applies to any matrix, not just square ones.
+[00:20.05] So, remember we can decompose $A$...
+[00:23.41] ...into three components. We write $A = U \Sigma V^T$.
+[00:29.60] Right? $U$, Sigma, and V transpose.
+[00:33.02] Now, what's special about $U$ and $V$?
+[00:38.19] They are... they must be orthogonal matrices.
+[00:41.55] Right? Their columns are orthonormal. $U^T U$ is the identity. $V^T V$ is the identity.
+[00:45.30] And Sigma... Sigma is the one in the middle.
+[00:48.71] That one is diagonal. Well, "mostly" diagonal.
+[00:52.04] It holds the singular values.
+[00:55.12] And these values, $\sigma_i$, they are always non-negative.
+[00:58.30] They're always greater than or equal to zero.
+[01:01.44] We... we usually sort them. We sort them from largest to smallest.
+[01:04.91] $\sigma_1 \ge \sigma_2 \ge ... \ge 0$.
+[01:09.22] So let's think about the dimensions. This is where it gets... tricky.
+[01:12.60] If $A$ is $m \times n$. Right? An $m \times n$ matrix.
+[01:17.33] Then $U$... $U$ has to be $m \times m$.
+[01:21.05] It's an orthogonal matrix, so its columns form a basis for... $\mathbb{R}^m$.
+[01:25.88] And $V$... $V$ must be $n \times n$.
+[01:29.40] Its columns are the basis for $\mathbb{R}^n$.
+[01:32.17] Which means Sigma... $\Sigma$ has to have the same dimensions as $A$.
+[01:36.49] $\Sigma$ is also $m \times n$.
+[01:39.03] But we said it's diagonal. How can a rectangular matrix be diagonal?
+[01:43.70] Well, it means the entries $\Sigma_{ii}$... those are the singular values.
+[01:48.25] $\Sigma_{11}$ is $\sigma_1$, $\Sigma_{22}$ is $\sigma_2$, and so on.
+[01:52.11] All the other entries are zero.
+[01:54.96] So if it's a tall matrix, you'll have this diagonal block of singular values...
+[01:59.40] ...and then a bunch of zero rows at the bottom.
+[02:02.15] If it's a wide matrix, you get the diagonal block...
+[02:05.33] ...and then zero columns on the right.
+[02:07.80] Makes sense?
+[02:10.14] This is what we call the... the full SVD.
+[02:13.67] But you'll notice... if you have those zero rows in Sigma...
+[02:17.09] ...when you do the multiplication $U \Sigma$...
+[02:20.22] ...they're just going to zero out the last columns of $U$.
+[02:23.51] They don't... they don't contribute to the final $A$.
+[02:26.30] So often, we use what's called the reduced SVD.
+[02:30.18] This is... this is much more common in practice.
+[02:33.45] In the reduced SVD, if $A$ is $m \times n$, and let's say $m > n$.
+[02:38.90] We only keep the first $n$ columns of $U$.
+[02:42.66] So $U$ becomes $m \times n$.
+[02:45.01] $\Sigma$ becomes a square $n \times n$ diagonal matrix.
+[02:49.23] And $V^T$ is still $n \times n$.
+[02:52.10] This... this product still gives you $A$ exactly.
+[02:55.08] We just... we just threw away the parts that multiply by zero anyway.

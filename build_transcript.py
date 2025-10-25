@@ -75,6 +75,7 @@ async def receive_messages(websocket, output_file):
 
     try:
         with open(output_file, 'w') as f:
+            pass
             f.write(
                 f"Transcription started at {START_TIME.strftime('%Y-%m-%d %H:%M:%S')}\n")
             f.write("=" * 80 + "\n\n")
