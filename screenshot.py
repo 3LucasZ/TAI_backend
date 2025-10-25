@@ -13,7 +13,7 @@ if __name__ == "__main__":
         if time.time() - cur > frame_duration:
             img = cv2.imread("screenshot.png")
             frame = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
-            dbg_mask = findvideo.find_video(frame)
+            dbg_mask, _, _ = findvideo.find_video(frame)
             cv2.imshow("TAI", dbg_mask)
             cur = time.time()
         if cv2.waitKey(1) & 0xFF == ord("q"):
