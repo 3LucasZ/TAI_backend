@@ -20,8 +20,14 @@ headers = {
 
 
 def clean_text_for_tts(text):
+    text = text.replace('_', ' ').replace('-', ' ')
+    text = re.sub(r'([a-z0-9])([A-Z])', r'\1 \2', text)
+    text = re.sub(r'([A-Z])([A-Z][a-z])', r'\1 \2', text)
+
     cleaned_text = re.sub(r'[^a-zA-Z0-9.,!?: \'"]',
                           '', text, flags=re.IGNORECASE)
+
+    text = re.sub(r'\s+', ' ', text).strip()
     return cleaned_text
 
 

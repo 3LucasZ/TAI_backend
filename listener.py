@@ -50,7 +50,7 @@ class ContinuousSpeechListener:
 
         # Execute based on state
         if valid_question(text):
-            requests.post("http://localhost:8000/chat/bot/",
+            requests.post("http://localhost:8000/chat/user/",
                           json={"text": text})
             if not self.conversation:
                 # conversation = False: do thing 1 and thing 2
@@ -62,7 +62,7 @@ class ContinuousSpeechListener:
                     "http://localhost:8000/setCollapsedFalse")
             transcript = get_transcript(mock=True)
             answer = ask_professor(transcript, text)
-            requests.post("http://localhost:8000/chat/user/",
+            requests.post("http://localhost:8000/chat/bot/",
                           json={"text": answer})
             # tts
             text_to_speech(answer)
