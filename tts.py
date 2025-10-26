@@ -28,7 +28,7 @@ def clean_text_for_tts(text):
 def text_to_speech(text):
     url = "https://api.fish.audio/v1/tts"
     data = {
-        "text": text,
+        "text": clean_text_for_tts(text),
         "format": "mp3",
         "reference_id": voices["josh"],
         "latency": "balanced"  # faster
@@ -58,5 +58,4 @@ if __name__ == "__main__":
     text = '''
 To construct a dataframe, there are several methods. As I covered starting around 00:20, one common way is using `pd.read_csv()` to read from a CSV file. You can also create one from a list with column names (around 02:34), or from a list of lists where each sub-list represents a row, along with specifying column names (around 03:07).
 '''
-    text = clean_text_for_tts(text)
     text_to_speech(text)
