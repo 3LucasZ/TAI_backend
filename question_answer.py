@@ -78,11 +78,6 @@ def get_transcript(mock=False):
     return content
 
 
-def get_answer(question_text):
-    transcript = get_transcript()
-    return ask_professor(transcript, question_text)
-
-
 if __name__ == "__main__":
     transcript = get_transcript(mock=True)
     ask_professor(transcript, "How do you construct a dataframe?")

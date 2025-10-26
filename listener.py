@@ -2,17 +2,12 @@ import requests
 import speech_recognition as sr
 from enum import Enum
 
-from question_answer import get_answer, valid_question
+from question_answer import ask_professor, get_transcript, valid_question
 from tts import text_to_speech
 # from video_sidebar_module import resume_video_close_sidebar, pause_video_open_sidebar
 # from claude_inference_module import question_validity, get_answer
 # from FastAPI_requests import send_question, send_answer
 # from speech_to_text_module import text_to_speech
-
-
-class ConversationState(Enum):
-    IDLE = "idle"
-    IN_CONVERSATION = "in_conversation"
 
 
 class ContinuousSpeechListener:
@@ -27,19 +22,6 @@ class ContinuousSpeechListener:
             print("🔧 Calibrating for ambient noise...")
             self.recognizer.adjust_for_ambient_noise(source, duration=2)
             print("✅ Calibration complete\n")
-
-    def thing_1(self, text):
-        """Execute when conversation=False and speech detected"""
-        print(f"[THING 1] Processing: {text}")
-        self.conversation = True
-        # Your logic here
-        pass
-
-    def thing_2(self, text):
-        """Execute on every speech detection"""
-        print(f"[THING 2] Processing: {text}")
-        # Your logic here
-        pass
 
     def check_trigger_word(self, text):
         """Check if text contains any trigger word"""
@@ -78,7 +60,8 @@ class ContinuousSpeechListener:
                 self.conversation = True
                 requests.post(
                     "http://localhost:8000/setCollapsedFalse")
-            answer = get_answer(text)
+            transcript = get_transcript(mock=True)
+            answer = ask_professor(transcript, text)
             requests.post("http://localhost:8000/chat/user/",
                           json={"text": answer})
             # tts
