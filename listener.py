@@ -70,16 +70,10 @@ class ContinuousSpeechListener:
         print()
 
     def listen_continuously(self):
-        """Continuously listen for speech"""
-        print("🎤 Continuous listener started")
-        print(f"   Trigger words: {', '.join(self.trigger_word)}")
-        print("   Press Ctrl+C to stop\n")
-
         with self.microphone as source:
             while True:
                 try:
-                    print("👂 Listening...", end='\r')
-
+                    print("Listening...", end='\r')
                     # Listen for speech (blocks until speech detected)
                     audio = self.recognizer.listen(
                         source,
