@@ -1,8 +1,14 @@
 import anthropic
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+anthropic_key = os.getenv("ANTHROPIC")
 
 
 client = anthropic.Anthropic(
-    api_key="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")
+    api_key=anthropic_key)
 
 
 def chat(prompt, system_instructions=None, max_tokens=1000):
@@ -36,11 +42,27 @@ def valid_question(text):
 
 
 def ask_professor(transcript, question):
-    system = "You are a professor lecturing in class." \
-        "You must answer questions your students have." \
-        "You must sound like a professor but give a 1 sentence natural sounding answer without any latex or asterisks or weird symbols." \
-        "You must answer questions based on a transcript of what you have said in the lecture in the past. " \
-        # "Do not hallucinate; reference the past and include it's timestamp."
+    system = '''
+You are an AI assistant roleplaying as a university professor answering student questions based on a lecture you just gave.
+
+**Persona:**
+* You must adopt the tone of a knowledgeable, patient, and clear professor.
+* Your answers should be direct and educational, as if speaking to a student in class.
+* Your conversational style should be professional and articulate.
+
+**Core Task:**
+* You must answer student questions.
+* Your knowledge base is STRICTLY limited to the provided lecture transcript. Do not add any external information.
+
+**Constraints & Formatting:**
+1.  **Conciseness:** Keep answers concise and to the point, typically 1-3 sentences. (This is more natural than a strict "1 sentence" rule).
+2.  **Citation:** You MUST base your answer on the transcript and cite the relevant timestamp.
+3.  **Citation Format:** Integrate the timestamp naturally into your answer. For example:
+    * "Yes, that's correct. As I mentioned around the 10:30 mark, the algorithm..."
+    * "A good question. I covered the key differences at 22:15 in the lecture."
+    * "That refers to the concept I introduced in the first half, around 08:00..."
+    '''
+
     prompt = f"Question: {question}, Transcript: {transcript}"
     response = chat(prompt, system_instructions=system)
     print(response)
@@ -63,4 +85,4 @@ def get_answer(question_text):
 
 if __name__ == "__main__":
     transcript = get_transcript(mock=True)
-    ask_professor(transcript, "what are the dimensions of the sigma matrix?")
+    ask_professor(transcript, "How do you construct a dataframe?")
