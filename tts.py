@@ -1,12 +1,14 @@
+import os
+from dotenv import load_dotenv
 import requests
 import pygame
 import io
 import time
 from fish_audio_sdk import WebSocketSession, TTSRequest
 import re
-FISH_API_KEY = "4691bc0e3869458b9cb7e8fa91cc2941"
+load_dotenv()
+FISH_API_KEY = os.environ.get("FISH")
 
-session = WebSocketSession(FISH_API_KEY)
 
 voices = {"arnav": "6e445b37225c4b8baa00a50296d93ffa",
           "arnold": "536d3a5e000945adb7038665781a4aca",
@@ -19,22 +21,10 @@ headers = {
 }
 
 
-def clean_text_for_tts(text):
-    text = text.replace('_', ' ').replace('-', ' ')
-    text = re.sub(r'([a-z0-9])([A-Z])', r'\1 \2', text)
-    text = re.sub(r'([A-Z])([A-Z][a-z])', r'\1 \2', text)
-
-    cleaned_text = re.sub(r'[^a-zA-Z0-9.,!?: \'"]',
-                          '', text, flags=re.IGNORECASE)
-
-    text = re.sub(r'\s+', ' ', text).strip()
-    return cleaned_text
-
-
 def text_to_speech(text):
     url = "https://api.fish.audio/v1/tts"
     data = {
-        "text": clean_text_for_tts(text),
+        "text": text,
         "format": "mp3",
         "reference_id": voices["josh"],
         "latency": "balanced"  # faster

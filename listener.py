@@ -1,13 +1,27 @@
+import re
 import requests
 import speech_recognition as sr
 from enum import Enum
 
 from question_answer import ask_professor, get_transcript, valid_question
 from tts import text_to_speech
+from tts_stream import text_to_speech_stream
 # from video_sidebar_module import resume_video_close_sidebar, pause_video_open_sidebar
 # from claude_inference_module import question_validity, get_answer
 # from FastAPI_requests import send_question, send_answer
 # from speech_to_text_module import text_to_speech
+
+
+def clean_text_for_tts(text):
+    text = text.replace('_', ' ').replace('-', ' ')
+    text = re.sub(r'([a-z0-9])([A-Z])', r'\1 \2', text)
+    text = re.sub(r'([A-Z])([A-Z][a-z])', r'\1 \2', text)
+
+    cleaned_text = re.sub(r'[^a-zA-Z0-9.,!?: \'"]',
+                          '', text, flags=re.IGNORECASE)
+
+    text = re.sub(r'\s+', ' ', text).strip()
+    return cleaned_text
 
 
 class ContinuousSpeechListener:
@@ -65,7 +79,7 @@ class ContinuousSpeechListener:
             requests.post("http://localhost:8000/chat/bot/",
                           json={"text": answer})
             # tts
-            text_to_speech(answer)
+            text_to_speech_stream(clean_text_for_tts(answer))
 
         print()
 
